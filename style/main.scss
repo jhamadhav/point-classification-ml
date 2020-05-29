@@ -1,0 +1,63 @@
+ * {
+     margin: 0;
+     padding: 0;
+     box-sizing: border-box;
+ }
+
+ body {
+     background-color: #2d3e50;
+     color: white;
+
+     display: flex;
+     flex-direction: column;
+     justify-content: space-around;
+     align-items: center;
+     position: relative;
+     width: 100vw;
+     height: auto;
+ }
+
+ .container {
+     display: flex;
+     flex-direction: column;
+     justify-content: space-around;
+     align-items: center;
+     position: relative;
+     width: 100%;
+     height: auto;
+ }
+
+ h1 {
+     margin: 10px;
+ }
+
+ #canvas {
+     margin: 20px;
+ }
+
+ p {
+     width: 90vw;
+     height: auto;
+     margin: 10px;
+     padding: 5px;
+ }
+
+ button {
+     padding: 8px 20px;
+     outline: none;
+     border: 2px solid white;
+     color: white;
+     border-radius: 4px;
+     background: transparent;
+     font-size: medium;
+     cursor: pointer;
+ }
+
+ .btn {
+     width: 40vw;
+     display: flex;
+     flex-direction: row;
+     justify-content: space-around;
+     align-items: center;
+     margin: 10px;
+ }
