@@ -47,8 +47,9 @@ h1 {
   margin: 10px;
 }
 
-#canvas {
-  margin: 20px;
+#err,
+#gen {
+  margin-top: 10px;
 }
 
 p {

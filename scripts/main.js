@@ -1,5 +1,5 @@
 var canvas, ctx, w, h;
-var r, points = [], num = 100;
+var r, points = [], num = 250;
 var pseudo_line = ml_line = temp_line = {
     angle: null,
     intercept: null,
@@ -22,14 +22,15 @@ function init() {
     h = window.innerHeight;
     points = [];
 
-    r = (h < w) ? h / 2 : w / 2;
-    r = (2 * r < 300) ? r - 2 : 250;
+    r = (h < w) ? (h - 10) / 2 : (w - 10) / 2;
+    r = (2 * r > 500) ? 250 : r - 10;
 
     canvas.width = canvas.height = 2 * r;
     ctx.translate(r, r);
     new_set();
 }
 
+// fn used to draw the base and points
 function draw() {
     //clearing canvas
     ctx.fillStyle = '#2d3e50';
@@ -38,45 +39,46 @@ function draw() {
     //circle region
     draw_circle(0, 0, r);
     for (let i = 0; i < num; i++) {
-        // points[i].bg = 'red';
         points[i].draw();
     }
-    draw_line(pseudo_line);
-    // draw_line(ml_line);
-
-    // requestAnimationFrame(draw);
 }
 
 
 // functions to train the machine
-
 function train() {
-
-    // our very own line i.e. for now random
-    ml_line = {
-        angle: rand(0, 2 * PI),
-        intercept: rand(0, r),
-        col: 'lime',
-        w: '3'
-    };
-    draw();
-    draw_line(ml_line);
-
-    // initial error
-    ml_error = eval_error(points, ml_line);
-    // console.log('error : ' + error_ml);
+    // will run only if it isn't already running
     if (!is_training) {
+        // our very own line i.e. for now random
+        ml_line = {
+            angle: rand(0, 2 * PI),
+            intercept: rand(0, r),
+            col: 'lime',
+            w: '3'
+        };
+        draw();
+        draw_line(ml_line);
+
+        // initial error
+        ml_error = eval_error(points, ml_line);
+        // console.log('error : ' + error_ml);
+
         trainer();
+    } else {
+        window.cancelAnimationFrame(animFrame);
+        is_training = false;
     }
 
 }
 
+// the function with does all the calculation
 function trainer() {
 
     is_training = true;
     let d1 = exp(-1 / ml_error);
     let d2 = d1 / 100;
     // console.log('error : ' + ml_error);
+
+    /* All possible cases that can be used to move */
     const cases = [];
 
     // case 1 : line intercept +ve and angle moves +ve
@@ -155,26 +157,30 @@ function trainer() {
     // sort error by least
     cases.sort((a, b) => a.err - b.err)
     // console.log(cases);
+
+    // display error and current generation of training
     ml_error = cases[0].err;
     document.getElementById('err').innerText = 'Error = ' + ml_error.toPrecision(8);
     document.getElementById('gen').innerText = 'Gen = ' + gen;
+
+    //get the best move to reduce error and implement it
     change_line(ml_line, cases[0].d1, cases[0].d2);
     draw();
     draw_line(ml_line);
 
-    // if (gen % 100 == 0) {
-    //     let ran = floor(rand(0, cases.length - 1));
-    //     change_line(ml_line, cases[ran].d1, cases[ran].d2);
-    // }
-
-    if (ml_error.toPrecision(2) > 0.01) {
-        gen += 1;
-        animFrame = window.requestAnimationFrame(trainer);
+    //stop if generation exceeds 1002(an arbitrary) or error is less than 0.1
+    if (gen < 1002) {
+        if (ml_error.toPrecision(2) > 0.1) {
+            gen += 1;
+            animFrame = window.requestAnimationFrame(trainer);
+        } else {
+            window.cancelAnimationFrame(animFrame);
+            is_training = false;
+        }
     } else {
         window.cancelAnimationFrame(animFrame);
         is_training = false;
     }
-
 }
 
 // change line 
@@ -185,12 +191,14 @@ function change_line(l, d1, d2) {
 }
 
 // to calculate the error for the current line
+
+// method 2 (works, good enough)
 function eval_error(p, l) {
     let res = 0;
     for (let i = 0; i < p.length; i++) {
         let temp = get_pos(p[i], l);
 
-        if ((temp == 'right' && p[i].bg == 'red') || (temp == 'left' && p[i].bg == '#2d3e50')) {
+        if ((temp == 'left' && p[i].bg == 'red') || (temp == 'right' && p[i].bg == '#2d3e50')) {
             res += 0;
         } else {
             res += dist(p[i], l);
@@ -199,6 +207,7 @@ function eval_error(p, l) {
     return res;
 }
 
+// method 1 (works but uses original line so not actually machine learning so discarded)
 // function eval_error(p, l) {
 //     let res = 0;
 //     for (let i = 0; i < p.length; i++) {
@@ -215,20 +224,19 @@ function eval_error(p, l) {
 // to get distance between point and a line
 function dist(p, l) {
     let m = tan(l.angle);
-    let num = abs(p.y + m * p.x + l.intercept);
+    let num = abs(p.y - m * p.x - l.intercept);
     let den = sqrt(1 + m * m);
     return num / den;
 }
-
 
 // function to initialize all the process
 function new_set() {
     points = [];
     gen = 0;
     ml_error = 0;
-    document.getElementById('err').innerText = 'Error = ' + ml_error.toPrecision(8);
+    document.getElementById('err').innerText = 'Error = ' + ml_error.toPrecision(4);
     document.getElementById('gen').innerText = 'Gen = ' + gen;
-    gen_points(4000);
+    get_points(1000);
     pseudo_line.angle = rand(0, 2 * PI);
     pseudo_line.intercept = rand(0, r);
     pseudo_line.col = 'black';
@@ -240,7 +248,7 @@ function new_set() {
 }
 
 //generate points
-function gen_points(num) {
+function get_points(num) {
     for (let i = 0; i < num; i++) {
         let a = rand(0, r - 10);
         let theta = rand(0, 2 * PI);
