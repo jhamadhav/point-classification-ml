@@ -7,6 +7,7 @@
     <title>Machine learning</title>
 
     <!-- stylesheet -->
+    <link href="https://fonts.googleapis.com/css2?family=Muli&family=Raleway&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style/main.min.css">
 
     <!-- scripts -->
@@ -19,17 +20,94 @@
     <h1>Point classification</h1>
     <canvas id="canvas"></canvas>
 
-    <div id="err">Error : 0</div>
-    <div id="gen">Gen : 1</div>
-
-
+    <div class="info">
+        <div class="title">Error : <span id="err">0.00</span></div>
+        <div class="title">Gen : <span id="gen">1</span>
+        </div>
+    </div>
     <div class="btn">
-        <button onclick="new_set()">New set</button>
+        <button onclick="new_set()">New</button>
         <button onclick="train()">Train</button>
     </div>
     <!-- explanation -->
     <p>
-        How it works:
+
+    <div class="article">
+
+        <span class="header">How does it work ? </span> <br> <br>
+        <a href="https://en.wikipedia.org/wiki/Machine_learning">Machine learning</a> is the study of computer
+        algorithms that improves automatically through
+        experience.
+        <br><br>
+        In this case the it is used to separate various points plotted in a region by color. <br> Question remains, how
+        does this example works ? <br> <br> It's as follows : <br> </div>
+
+    <br> <br>
+
+
+    <div class="article">
+        <span class="header">Step 1 : </span> <br> <br>
+        <div> <img src="./img/step1.png" alt="step 1"></div> <br>
+        Initially a circle is drawn, this is the region were the machine will
+        operate. <br> Later few ( n = 250) points are randomly
+        drawn on the region. The number n is arbitrary and it doesn't affect the results. <br>
+        The location of these points is stored in a <a href="https://en.wikipedia.org/wiki/Array">array</a> to later
+        feed to the learning algorithm (Let's call it ml for
+        now).
+    </div>
+
+    <br> <br>
+
+    <div class="article">
+        <span class="header">Step 2 : </span> <br> <br>
+        <img src="./img/step2.png" alt="step 2"><br> <br>
+        A line is randomly draw, let's call it <i>pseudo line</i> and make all the points that are 'left' of it
+        <i>Red</i> and all the points on it's 'right' <i>blue</i> or vice-versa.<br>
+        Later, this line is discarded and the only thing left is the position and the color of the points present.
+    </div>
+
+    <br> <br>
+
+    <div class="article">
+        <span class="header">Step 3 : </span> <br> <br>
+        <img src="./img/step3.png" alt="step 3"><br><br>
+        Once the required points are plotted the <i>pseudo line</i> is removed from the region and only the colored
+        points are left. Now it's up to the ml to draw a line and adjust it in such a way that all the colored
+        pointes are separated.
+    </div>
+
+    <br> <br>
+
+    <div class="article">
+        <span class="header">Step 4 : </span> <br> <br>
+        <img src="./img/step4.png" alt="step 4"><br><br>
+        The ml first draws a random line called <i>'ml_line' </i>(green in color), this line is not related to the
+        previous pseudo line and only has information about the points and their respective color. <br> <br>
+        <i style="color: #f1c40f;">So how does the machine train ?</i> <br> <br>
+        For the ml_line, let's pre-decide that we want all red points on the left and blue on the right or vice-versa.
+        <br> <br>
+        Next ml will check all the present line. <br> If they are as we decided then it is ignored and if not then it's
+        distance is calculated and stored in a variable called <i>'ml_error'</i>
+        <div class="br"></div>
+        Now we have the distances of all the misplaced points as error, ml will now adjust the line by checking all the
+        possible cases by which it can move the line and the one that will produce the least error will be executed.
+    </div>
+
+    <br> <br>
+
+    <div class="article">
+        <span class="header">Step 5 : </span> <br> <br>
+        <img src="./img/step5.png" alt="step 5"><br> <br>
+        Once all the points are evaluated and the ml_line is moved, if the error is low enough to be ignored the work is
+        done else the no. of generation is increased by one and the process repeats. <br> <br> And finally the task is
+        complete, thus rather than having to find a rigid formula or method by hand to find a method to separate these
+        points by color, we wrote a algorithm
+        that will teach itself to do the specific task by trial and error. <br> <br>
+        And that's the rudimentary concept of Machine Learning.
+        <br> <br>
+        <span class="header">Hence my first Machine Learning project is completed ! :) </span>
+    </div> <br> <br>
+
     </p>
 </body>
 

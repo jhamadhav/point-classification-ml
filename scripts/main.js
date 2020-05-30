@@ -23,7 +23,7 @@ function init() {
     points = [];
 
     r = (h < w) ? (h - 10) / 2 : (w - 10) / 2;
-    r = (2 * r > 500) ? 250 : r - 10;
+    r = (2 * r > 500) ? 250 : r - 20;
 
     canvas.width = canvas.height = 2 * r;
     ctx.translate(r, r);
@@ -39,8 +39,11 @@ function draw() {
     //circle region
     draw_circle(0, 0, r);
     for (let i = 0; i < num; i++) {
+        // points[i].bg = 'black';
         points[i].draw();
     }
+    // draw_line(pseudo_line);
+
 }
 
 
@@ -48,6 +51,7 @@ function draw() {
 function train() {
     // will run only if it isn't already running
     if (!is_training) {
+        gen = 1;
         // our very own line i.e. for now random
         ml_line = {
             angle: rand(0, 2 * PI),
@@ -160,17 +164,17 @@ function trainer() {
 
     // display error and current generation of training
     ml_error = cases[0].err;
-    document.getElementById('err').innerText = 'Error = ' + ml_error.toPrecision(8);
-    document.getElementById('gen').innerText = 'Gen = ' + gen;
+    document.getElementById('err').innerText = ml_error.toPrecision(4);
+    document.getElementById('gen').innerText = gen;
 
     //get the best move to reduce error and implement it
     change_line(ml_line, cases[0].d1, cases[0].d2);
     draw();
     draw_line(ml_line);
 
-    //stop if generation exceeds 1002(an arbitrary) or error is less than 0.1
-    if (gen < 1002) {
-        if (ml_error.toPrecision(2) > 0.1) {
+    //stop if generation exceeds 902(an arbitrary) or error is less than 0.1
+    if (gen < 902) {
+        if (ml_error.toPrecision(4) > 0.1) {
             gen += 1;
             animFrame = window.requestAnimationFrame(trainer);
         } else {
@@ -234,9 +238,9 @@ function new_set() {
     points = [];
     gen = 0;
     ml_error = 0;
-    document.getElementById('err').innerText = 'Error = ' + ml_error.toPrecision(4);
-    document.getElementById('gen').innerText = 'Gen = ' + gen;
-    get_points(1000);
+    document.getElementById('err').innerText = ml_error.toPrecision(4);
+    document.getElementById('gen').innerText = gen;
+    get_points(4000);
     pseudo_line.angle = rand(0, 2 * PI);
     pseudo_line.intercept = rand(0, r);
     pseudo_line.col = 'black';
