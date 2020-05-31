@@ -78,8 +78,8 @@ function train() {
 function trainer() {
 
     is_training = true;
-    let d1 = exp(-1 / ml_error);
-    let d2 = d1 / 100;
+    let d1 = exp(-1.5 / ml_error);
+    let d2 = d1 / 400;
     // console.log('error : ' + ml_error);
 
     /* All possible cases that can be used to move */
@@ -172,8 +172,8 @@ function trainer() {
     draw();
     draw_line(ml_line);
 
-    //stop if generation exceeds 902(an arbitrary) or error is less than 0.1
-    if (gen < 902) {
+    //stop if generation exceeds 5002(an arbitrary) or error is less than 0.1
+    if (gen < 5002) {
         if (ml_error.toPrecision(4) > 0.1) {
             gen += 1;
             animFrame = window.requestAnimationFrame(trainer);
@@ -240,7 +240,7 @@ function new_set() {
     ml_error = 0;
     document.getElementById('err').innerText = ml_error.toPrecision(4);
     document.getElementById('gen').innerText = gen;
-    get_points(4000);
+    get_points(1000);
     pseudo_line.angle = rand(0, 2 * PI);
     pseudo_line.intercept = rand(0, r);
     pseudo_line.col = 'black';
