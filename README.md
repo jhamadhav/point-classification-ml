@@ -10,3 +10,6 @@ Sample Image : <br> <br>
 
 
 Github Page link : http://jhamadhav.com/point-classification-ml/
+
+Special thanks to ![Suraj](https://github.com/jhasuraj01) for his help throughout the project. </br>
+check his code : ![click for suraj's code](https://github.com/jhasuraj01/ai)
