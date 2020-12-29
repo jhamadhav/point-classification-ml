@@ -1,0 +1,26 @@
+{
+    "name": "Point classification using ML",
+    "short_name": "Point classification using ML ",
+    "icons": [
+        {
+            "src": "./img/icon.png",
+            "sizes": "48x48",
+            "type": "image/png"
+        },
+        {
+            "src": "./img/icon.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "./img/icon.png",
+            "sizes": "96x96",
+            "type": "image/png"
+        }
+    ],
+    "scope": "",
+    "orientation": "portrait",
+    "display": "standalone",
+    "theme_color": "#6495ad",
+    "background_color": "#6495ad"
+}
